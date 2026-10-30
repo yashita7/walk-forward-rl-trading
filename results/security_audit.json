@@ -1,0 +1,13 @@
+{
+  "scanned_history_head": "d689391a5477d8a1bc69b00e1699b4311136cda9",
+  "tracked_files_scanned": 157,
+  "reachable_history_blobs_scanned": 158,
+  "credential_findings": 0,
+  "history_credential_findings": 0,
+  "scan_scope": "Common credential formats, private key headers, credential URLs, and quoted literal secret assignments; not a guarantee against every secret format.",
+  "environment_file": ".env",
+  "environment_permissions": "0600",
+  "environment_git_ignored": true,
+  "current_pipeline_requires_api_keys": false,
+  "credential_values_recorded": false
+}

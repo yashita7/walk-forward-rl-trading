@@ -107,7 +107,19 @@ specification for other environments. Other operating systems were not validated
 Small, checksummed result archives restore excluded daily result CSVs without
 network access, retraining, deleting, or overwriting existing histories. They
 contain saved exposure decisions and realized returns, not downloaded price bars
-or model weights. The suite currently has **34 passing tests**.
+or model weights. The suite currently has **36 passing tests**.
+
+## Credentials
+
+The current public yfinance pipeline needs no API keys. `.env` is a local text
+file for any future credentials; it is ignored by Git and restricted to its owner
+on this machine. `.env.example` contains comments and an empty placeholder only.
+Never put credentials in `config.yaml`, source code, notebooks, or result files.
+Future authenticated integrations should read credentials from environment
+variables; this pipeline currently does not load `.env` automatically. A `.env`
+file is not encryption, and leaked credentials must be revoked rather than merely
+moved out of a file. GitHub access should use a credential manager or SSH agent,
+not a token embedded in a remote URL or project file.
 
 ## Run a new experiment without overwriting history
 
