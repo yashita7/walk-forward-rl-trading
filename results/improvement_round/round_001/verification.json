@@ -1,0 +1,16 @@
+{
+  "status": "passed",
+  "oos_paths": 120,
+  "oos_observations_per_path": 2016,
+  "summary_rows": 24,
+  "new_ppo_fits": 510,
+  "new_forecast_fits": 255,
+  "unique_prediction_blocks": 1020,
+  "purged_windows": 51,
+  "failed_training_attempts": 0,
+  "test_suite_before_run": "32 passed",
+  "original_results_unchanged": true,
+  "plan_and_implementation_unchanged_during_training": true,
+  "return_wins_vs_buy_hold": 0,
+  "note": "Negative-performance variants are retained; no exception failures occurred."
+}

@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "tests_passed": 34,
+  "fresh_copy_reconstruction": {
+    "results/final": {
+      "restored_paths": 60,
+      "preserved_existing": true,
+      "archive_bytes": 255761
+    },
+    "results/improvement_round/round_001": {
+      "restored_paths": 120,
+      "preserved_existing": true,
+      "archive_bytes": 855763
+    }
+  },
+  "model_retraining": false,
+  "frozen_git_source_matches_training_manifest": true,
+  "plan_config_unchanged": true,
+  "documentation_links_valid": true,
+  "personal_path_and_secret_scan": "passed"
+}

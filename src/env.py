@@ -65,7 +65,7 @@ class TradingEnv(gym.Env):
         return self._observation(), {}
 
     def step(self, action: np.ndarray) -> tuple[np.ndarray, float, bool, bool, dict[str, float]]:
-        """Return net P&L in info and net P&L minus trailing risk penalty as reward."""
+        """Report net P&L; reward also subtracts optional risk/turnover penalties."""
         if self.i >= self.stop:
             raise RuntimeError("Episode ended; reset before stepping")
         position = float(np.clip(np.asarray(action).item(), self.action_space.low[0], self.action_space.high[0]))

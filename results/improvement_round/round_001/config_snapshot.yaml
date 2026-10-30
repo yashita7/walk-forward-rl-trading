@@ -1,0 +1,72 @@
+assets: [SPY, QQQ, BTC-USD]
+start: '2015-01-01'
+end: '2026-10-30'  # Frozen original data snapshot; end is exclusive.
+data_dir: data
+results_dir: results
+transaction_cost_bps: 5.0
+slippage_bps: 2.0
+volatility_penalty: 0.01
+risk_window: 20
+observation_window: 20
+train_years: 3
+test_months: 6
+annualization: 252  # Common SPY/QQQ session calendar, including BTC sampled on these dates.
+seeds: [7, 21, 42, 84, 123]
+ppo_timesteps: 10000
+ppo_n_steps: 256
+ppo_batch_size: 64
+forecast_seed: 123
+
+# Round 001: fixed before any variant is fitted. No parameter search.
+improvement_round:
+  id: round_001
+  original_results: results/final
+  output: results/improvement_round/round_001
+  variants: [ppo_turnover_penalty, ppo_long_only, vol_target_buy_hold, gb_fixed_features]
+  turnover_penalty: 0.001  # Additional teaching penalty; actual costs stay 0.0007.
+  turnover_action_low: -1.0
+  long_only_action_low: 0.0
+  action_high: 1.0
+  volatility_target: 0.10  # Desired yearly variability, not promised realized risk.
+  volatility_lookback: 20
+  volatility_floor: 0.01
+  maximum_position: 1.0
+  flat_threshold: 0.00000001
+  forecast_features: [log_return, return_lag_1, volatility_20, momentum_20, ma_spread]
+  forecast:
+    loss: huber
+    alpha: 0.9
+    n_estimators: 200
+    learning_rate: 0.03
+    max_depth: 2
+    min_samples_leaf: 20
+    min_samples_split: 2
+    subsample: 1.0
+    max_features: null
+    criterion: friedman_mse
+    ccp_alpha: 0.0
+    n_iter_no_change: null
+  forecast_prediction_scale: 1.0
+  forecast_scale_floor: 0.000001
+  ppo:
+    learning_rate: 0.0003
+    n_epochs: 10
+    gamma: 0.99
+    gae_lambda: 0.95
+    clip_range: 0.2
+    clip_range_vf: null
+    normalize_advantage: true
+    ent_coef: 0.0
+    vf_coef: 0.5
+    max_grad_norm: 0.5
+    target_kl: null
+    use_sde: false
+    sde_sample_freq: -1
+  policy:
+    net_arch: [32, 32]
+    activation: Tanh
+    ortho_init: true
+    log_std_init: 0.0
+    optimizer: Adam
+    optimizer_epsilon: 0.00001
+    normalize_images: false

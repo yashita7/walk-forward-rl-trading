@@ -1,0 +1,30 @@
+{
+  "original_ppo_fits": 255,
+  "round_ppo_fits": 510,
+  "reported_full_budget_ppo_fits": 765,
+  "assets": 3,
+  "windows_per_asset": 17,
+  "seeds": 5,
+  "strategies": 8,
+  "tests_passed": 34,
+  "verified_history_paths": 120,
+  "observations_per_history": 2016,
+  "new_variants": 4,
+  "return_wins_over_buy_hold": 0,
+  "variant_asset_comparisons": 12,
+  "vol_target_sharpe_improvements": 2,
+  "all_in_cost_bps": 7,
+  "plan_commit": "2e505ef588a26ee56eed190f04e51ec0c87d7218",
+  "training_code_commit": "3e3f1c7aff661f3245bf12197987ca81fff2b99d",
+  "sources": [
+    "results/final/timings.csv",
+    "results/improvement_round/round_001/manifest.json",
+    "results/improvement_round/round_001/findings.json",
+    "results/improvement_round/round_001/verification.json"
+  ],
+  "original_ppo_yearly_net_return": {
+    "BTC-USD": -0.1024876368503108,
+    "QQQ": -0.098785378663565,
+    "SPY": -0.0588502806159809
+  }
+}

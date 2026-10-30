@@ -101,15 +101,15 @@ existing implementation before reading the diagnostic scripts.
    at line 35 records when that answer becomes known. A missing answer or warmup
    feature causes that example to be removed at lines 36–37.
 4. **Make an observation.** In training, `TradingEnv._observation`
-   (`src/env.py:47`) flattens the last `self.window` rows of `self.features` into
+   (`src/env.py:54`) flattens the last `self.window` rows of `self.features` into
    one vector and appends `self.position`. With seven features and a 20-session
    window, that is 141 numbers. Test inference builds the same shape in
-   `train_predict` at `src/train_rl.py:37`; the scaler was fitted only on
+   `train_predict` at `src/train_rl.py:46`; the scaler was fitted only on
    `train_x` at `src/train_rl.py:19`. **Inference** means
    using an already fitted model to choose an output.
 5. **Choose an action and position.** `model.predict(..., deterministic=True)`
-   at `src/train_rl.py:38` uses the policy's chosen action without sampling extra
-   randomness. `position` at `src/env.py:64` clips an action to [-1, 1]. A value
+   at `src/train_rl.py:47` uses the policy's chosen action without sampling extra
+   randomness. `position` at `src/env.py:71` clips an action to [-1, 1]. A value
    of +0.5 means half the account exposed to rising prices; 0 means cash; -0.5
    means a short exposure, which benefits from falling prices and loses if they rise.
 6. **Earn the next return and compute the cost.** Suppose `self.position` was
@@ -120,11 +120,11 @@ existing implementation before reading the diagnostic scripts.
    at line 16 is `0.00479`, or 0.479%. Cost is deducted *inside* this calculation,
    rather than after the reward or a second time later.
 7. **Give the agent feedback.** `TradingEnv.step` calls `net_step` at
-   `src/env.py:67`, stores `net` in `self.history` at line 68, calculates `risk`
-   at line 69, and returns `net - self.penalty * risk` at line 72. If `risk`
+   `src/env.py:74`, stores `net` in `self.history` at line 75, calculates `risk`
+   at line 76, and calculates `net - self.penalty * risk` at line 79. If `risk`
    were 0.004, the default penalty of 0.01 would subtract another 0.00004 from
    the learning reward. This penalty is a teaching preference, not money paid.
-   `info['net_return']` at line 73 retains the actual net return for comparison.
+   `info['net_return']` at line 81 retains the actual net return for comparison.
 8. **Grade the real test trade.** `account` (`src/backtest.py:45`) uses the same
    `net_step` at line 59. At the end of the entire test history, lines 65–73
    charge a final exit. `metrics` at line 84 grades the real joined test returns,
@@ -191,3 +191,53 @@ this configuration; the library completes the final chunk, so requesting 10,000
 actually collects 10,240 steps per fitted policy. These extra steps stay in the
 training window. Every fold starts a fresh policy; test trading carries positions
 between folds, but never updates a policy from an upcoming test return.
+
+
+## 6. What the diagnostic and improvement round added
+
+A **diagnostic** examines an existing result without changing its decisions.
+`src/diagnostics.py:17` separates gross return (before trading expenses) from net
+return (after expenses), measures turnover (position changes), and counts time
+long, short, or flat. Original PPO averaged +2.17% before costs on SPY, −1.77%
+on QQQ, and −1.48% on BTC; after costs it averaged −5.89%, −9.88%, and −10.25%.
+It changed roughly half an account's target exposure each day. Weak returns before
+costs and expensive trading both contributed; this is not evidence of an otherwise
+reliable predictor merely needing cheaper trades.
+
+A **pre-declared experiment** writes down choices before seeing their new outcomes.
+The four requested variants and every numerical setting were frozen in
+`docs/EXPERIMENT_PLAN.md` and `config.yaml` at Git commit `2e505ef`; tested training
+code was committed at `3e3f1c7`. **Git** records versions of files. No variant was
+added, dropped, or adjusted after its results appeared. All four used the same
+three assets, 17 windows, five seeds, execution timing, and real trading costs.
+
+| Addition | Plain meaning | Code |
+| --- | --- | --- |
+| Turnover penalty | Subtract an extra 0.001 times position change from the teaching reward; real fees remain unchanged. | `src/env.py:79`, `src/round_variants.py:11` |
+| Long-only PPO | Allow positions from 0 to 1: cash or buying exposure, never a bet that prices will fall. | `src/env.py:49`, `src/round_variants.py:11` |
+| Volatility-targeted holding | Size a simple long position using recent variability, aiming at 10% yearly variability with exposure capped at 1. | `src/round_variants.py:24` |
+| Fixed-feature forecast | Use five fixed historical inputs and more regularized boosting; regularization means constraints that discourage fragile fitting. | `src/round_variants.py:33` |
+| Experiment runner | Check the committed plan, audit matching dates/prices, preserve all predictions, and log failures. | `src/improvement_round.py:72` |
+| Result reporter | Compare all eight strategies and draw seed-average account curves with their full range. | `src/improvement_report.py:73` |
+| Result archive | Restore small, checksummed position/return archives to daily CSVs without fitting models or replacing existing histories. | `src/result_archive.py` |
+
+The volatility rule uses only returns known before the opening trade. Its target
+is not guaranteed future risk and does not exactly match PPO's risk. The forecast's
+position is its predicted return divided by the training labels' variability,
+clipped to [-1, 1]; no test answers determine this scale. A **checkpoint** is a
+saved prediction block used to resume an interrupted identical run. Completed
+rounds cannot be fitted again in the same output directory, and failed attempts
+remain in the append-only ledger, a record to which new events are added.
+
+The penalty reduced trading on all three assets, but its average yearly return
+remained negative. Long-only PPO improved original PPO on all three assets, but
+still earned less than buy-and-hold. The simple volatility rule earned less than
+buy-and-hold but had a higher Sharpe on SPY and QQQ; Sharpe measures average return
+relative to variability. The forecast candidate performed worse than the original
+forecast on every asset, so calling it "stronger" was a hypothesis, not a result.
+None of the four new variants beat buy-and-hold's average yearly net return.
+
+These are **exploratory** findings: the original test dates were already examined
+before the follow-up plan. Pre-declaration prevents additional searching within
+this round; it does not erase that earlier knowledge or create an untouched test.
+A new, unexamined time period is needed before claiming lasting improvement.

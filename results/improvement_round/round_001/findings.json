@@ -1,0 +1,25 @@
+{
+  "return_wins_vs_buy_hold": [],
+  "both_return_and_sharpe_wins": [],
+  "penalty_reduces_trading_assets": 3,
+  "penalty_improves_original_ppo_return_assets": 3,
+  "long_only_improves_original_ppo_return_assets": 3,
+  "vol_target_reduces_variability_assets": 3,
+  "vol_target_higher_sharpe_assets": 2,
+  "forecast_improves_original_forecast_return_assets": 0,
+  "assets": 3,
+  "strategies": 8,
+  "seed_metric_rows": 120,
+  "original_ppo_fits": 255,
+  "new_ppo_fits": 510,
+  "sentences": [
+    "None of the four new variants beat buy-and-hold's average yearly return after costs on any asset.",
+    "Of the 12 asset/variant comparisons, 0 exceeded buy-and-hold on both average return and Sharpe, a measure of return relative to variability.",
+    "The turnover penalty reduced average daily trading on 3 of 3 assets and improved average return over original PPO on 3 of 3.",
+    "The long-only agent improved average return over original PPO on 3 of 3 assets, but buying a historically rising market does not itself show predictive timing.",
+    "The volatility-targeted holding rule lowered measured variability on 3 of 3 assets and improved Sharpe on 2 of 3, while earning less, so its benefit is a risk comparison rather than higher absolute return.",
+    "The fixed-feature forecast improved average return over the original forecasting rule on 0 of 3 assets, which evaluates the combined fixed model and position rule rather than proving the inputs caused an improvement.",
+    "The five seeds show variation from random starting points, while identical rule-based decisions have zero seed spread and neither measures uncertainty across future markets.",
+    "Every variant was kept with its declared settings, but these reused test dates make this exploratory evidence that still needs new untouched history before claiming a lasting improvement."
+  ]
+}

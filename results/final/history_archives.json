@@ -1,0 +1,9 @@
+{
+  "format": 1,
+  "files": {
+    "history_BTC-USD.npz": "f35a6e91dbf1ebeb1ab7615a89208833aa37684d57ff0146db2812a1c8ea78b3",
+    "history_QQQ.npz": "fd8d37985523581e2910c33d1eec1bd87a92b0d7f8eb1220b92f79c9d607da3f",
+    "history_SPY.npz": "9b1aad83b516ce8862ef87f8f7dfa70b805ccc78ba4190f7450d17deb093fbbc"
+  },
+  "contains": "Saved positions and realized return outcomes; no downloaded price bars or model weights."
+}

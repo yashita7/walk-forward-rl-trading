@@ -80,7 +80,7 @@ def write_report(output: Path) -> dict:
     exposure = pd.read_csv(output / "exposure_by_seed.csv").groupby(["asset", "strategy"]).mean(numeric_only=True)
     assets = sorted(summary.asset.unique())
     return_wins, both_wins = [], []
-    penalty_less_trading = penalty_better_return = long_better_return = vol_lower_risk = forecast_better_return = 0
+    penalty_less_trading = penalty_better_return = long_better_return = vol_lower_risk = vol_higher_sharpe = forecast_better_return = 0
     for asset in assets:
         group = summary[summary.asset == asset].set_index("strategy")
         buy = group.loc["buy_hold"]
@@ -94,6 +94,7 @@ def write_report(output: Path) -> dict:
         penalty_better_return += int(group.loc["ppo_turnover_penalty", "annualized_return_mean"] > group.loc["ppo", "annualized_return_mean"])
         long_better_return += int(group.loc["ppo_long_only", "annualized_return_mean"] > group.loc["ppo", "annualized_return_mean"])
         vol_lower_risk += int(group.loc["vol_target_buy_hold", "annualized_volatility_mean"] < buy.annualized_volatility_mean)
+        vol_higher_sharpe += int(group.loc["vol_target_buy_hold", "sharpe_mean"] > buy.sharpe_mean)
         forecast_better_return += int(group.loc["gb_fixed_features", "annualized_return_mean"] > group.loc["gradient_boosting", "annualized_return_mean"])
     if not return_wins:
         first = "None of the four new variants beat buy-and-hold's average yearly return after costs on any asset."
@@ -104,7 +105,7 @@ def write_report(output: Path) -> dict:
         f"Of the {len(assets)*len(VARIANTS)} asset/variant comparisons, {len(both_wins)} exceeded buy-and-hold on both average return and Sharpe, a measure of return relative to variability.",
         f"The turnover penalty reduced average daily trading on {penalty_less_trading} of {len(assets)} assets and improved average return over original PPO on {penalty_better_return} of {len(assets)}.",
         f"The long-only agent improved average return over original PPO on {long_better_return} of {len(assets)} assets, but buying a historically rising market does not itself show predictive timing.",
-        f"The volatility-targeted holding rule had lower realized return variability than buy-and-hold on {vol_lower_risk} of {len(assets)} assets, although its target is not a guarantee of future risk.",
+        f"The volatility-targeted holding rule lowered measured variability on {vol_lower_risk} of {len(assets)} assets and improved Sharpe on {vol_higher_sharpe} of {len(assets)}, while earning less, so its benefit is a risk comparison rather than higher absolute return.",
         f"The fixed-feature forecast improved average return over the original forecasting rule on {forecast_better_return} of {len(assets)} assets, which evaluates the combined fixed model and position rule rather than proving the inputs caused an improvement.",
         "The five seeds show variation from random starting points, while identical rule-based decisions have zero seed spread and neither measures uncertainty across future markets.",
         "Every variant was kept with its declared settings, but these reused test dates make this exploratory evidence that still needs new untouched history before claiming a lasting improvement."]
@@ -123,10 +124,10 @@ deviations: spread across seeds, not confidence about future markets.
     body += f"\n\nThe plan was frozen at commit `{metadata['plan_commit']}` and implementation at `{metadata['code_commit']}` before fitting. Original results are reused from `results/final/`; all new paths and failures stay in `{output.as_posix()}/`. This round fitted {metadata['ppo_fits_total']} new PPO seed/window policies and evaluated all four variants on five seeds and 17 windows per asset. No settings were chosen from these outcomes.\n"
     body += "\n## Curves and exposure\n\nCurves display the mean of individual account paths; shading shows the full seed range. They are descriptive averages, not an implemented combined strategy. Drawdowns are calculated separately for each seed before display. `exposure_by_seed.csv` retains before-cost returns, trading activity, exposure sizes, and long/short/flat fractions.\n"
     body += "\n## What remains uncertain\n\nThe round follows inspection of earlier test results. Pre-declaration prevents additional searches within the round but does not undo that selection. The volatility target only roughly matches risk; long-only gains can reflect market direction. The forecast changed its loss, tree settings, and position scaling together. Vendor adjustments, survivor selection, shared calendars, price-drift rebalancing, funding, short borrowing, and simplified fills remain limitations. No future-profit or formal significance claim is made.\n"
-    (output / "comparison.md").write_text(body + "\n")
+    (output / "comparison.md").write_text(body.rstrip() + "\n")
     docs = Path("docs")
     docs.mkdir(exist_ok=True)
-    (docs / "IMPROVEMENT_RESULTS.md").write_text(body + "\n")
+    (docs / "IMPROVEMENT_RESULTS.md").write_text(body.rstrip() + "\n")
     summary_doc = docs / "RESULTS_SUMMARY.md"
     marker, end = "<!-- IMPROVEMENT_ROUND_001 -->", "<!-- END_IMPROVEMENT_ROUND_001 -->"
     block = marker + "\n\n" + body.replace("# Pre-declared", "## Pre-declared", 1) + "\n" + end
@@ -142,6 +143,7 @@ deviations: spread across seeds, not confidence about future markets.
                 "penalty_improves_original_ppo_return_assets": penalty_better_return,
                 "long_only_improves_original_ppo_return_assets": long_better_return,
                 "vol_target_reduces_variability_assets": vol_lower_risk,
+                "vol_target_higher_sharpe_assets": vol_higher_sharpe,
                 "forecast_improves_original_forecast_return_assets": forecast_better_return,
                 "assets": len(assets), "strategies": len(summary.strategy.unique()),
                 "seed_metric_rows": len(raw), "original_ppo_fits": 255,

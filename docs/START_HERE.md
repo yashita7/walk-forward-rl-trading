@@ -31,9 +31,10 @@ A **random-agent check** compares PPO with 1,000 programs making random long/sho
 decisions per asset, with similar average exposure and trading activity. It shows
 how widely luck can vary on this history, not a probability of future success.
 
-Next we separate before-cost performance from expenses, then freeze four proposed
-changes before testing them: penalize trading, allow buying only, adjust a holding
-rule's exposure to recent price variability, and strengthen the forecasting rule.
-All successes and failures will remain recorded. These dates have already been
-examined, so the next round is exploratory: new untouched dates are still needed
-before claiming that any improvement generalizes.
+The diagnostic found weak returns before expenses as well as heavy trading.
+We then committed four changes before running them, keeping all outcomes.
+None beat buy-and-hold's average return after costs.
+The simple risk-sizing rule improved Sharpe, average return relative to variability,
+on SPY and QQQ while earning less.
+The next step is new untouched history and more realistic trading assumptions;
+this follow-up reused inspected dates and does not prove future improvement.
