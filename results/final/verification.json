@@ -1,0 +1,19 @@
+{
+  "status": "passed",
+  "oos_traces_verified": 60,
+  "seed_metric_rows": 60,
+  "summary_rows": 12,
+  "purged_folds_verified": 51,
+  "ppo_fits": 255,
+  "cost_scenarios_by_seed": 240,
+  "matched_random_runs": 3000,
+  "test_suite": "20 passed",
+  "checks": [
+    "raw cached open prices match realized returns",
+    "chronological contiguous OOS intervals",
+    "entry, reversal, fold carry and final exit costs",
+    "independently recomputed six metrics",
+    "mean/std across five seeds",
+    "default cost sensitivity reproduces original metrics"
+  ]
+}

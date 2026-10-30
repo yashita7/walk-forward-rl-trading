@@ -1,0 +1,59 @@
+{
+  "config": {
+    "assets": [
+      "SPY",
+      "QQQ",
+      "BTC-USD"
+    ],
+    "start": "2015-01-01",
+    "end": "2026-10-30",
+    "data_dir": "data",
+    "results_dir": "results",
+    "transaction_cost_bps": 5.0,
+    "slippage_bps": 2.0,
+    "volatility_penalty": 0.01,
+    "risk_window": 20,
+    "observation_window": 20,
+    "train_years": 3,
+    "test_months": 6,
+    "annualization": 252,
+    "seeds": [
+      7,
+      21,
+      42
+    ],
+    "ppo_timesteps": 256,
+    "ppo_n_steps": 64,
+    "ppo_batch_size": 32,
+    "forecast_seed": 123
+  },
+  "synthetic": false,
+  "smoke": true,
+  "generated_utc": "2026-10-30T16:51:59.145035+00:00",
+  "versions": {
+    "numpy": "2.4.6",
+    "pandas": "2.3.3",
+    "scikit-learn": "1.9.1",
+    "gymnasium": "1.4.0",
+    "stable-baselines3": "2.9.2",
+    "torch": "2.15.0",
+    "yfinance": "0.2.66"
+  },
+  "data_ranges": {
+    "SPY": {
+      "first": "2015-01-02 00:00:00",
+      "last": "2026-10-29 00:00:00",
+      "rows": 2974
+    },
+    "QQQ": {
+      "first": "2015-01-02 00:00:00",
+      "last": "2026-10-29 00:00:00",
+      "rows": 2974
+    },
+    "BTC-USD": {
+      "first": "2015-01-02 00:00:00",
+      "last": "2026-10-29 00:00:00",
+      "rows": 2974
+    }
+  }
+}

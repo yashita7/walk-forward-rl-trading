@@ -1,0 +1,45 @@
+{
+  "config": {
+    "assets": [
+      "SPY",
+      "QQQ",
+      "BTC-USD"
+    ],
+    "start": "2015-01-01",
+    "end": "2026-10-30",
+    "data_dir": "data",
+    "results_dir": "results",
+    "transaction_cost_bps": 5.0,
+    "slippage_bps": 2.0,
+    "volatility_penalty": 0.01,
+    "risk_window": 20,
+    "observation_window": 20,
+    "train_years": 3,
+    "test_months": 6,
+    "annualization": 252,
+    "seeds": [
+      7,
+      21,
+      42,
+      84,
+      123
+    ],
+    "ppo_timesteps": 1024,
+    "ppo_n_steps": 256,
+    "ppo_batch_size": 64,
+    "forecast_seed": 123
+  },
+  "shuffle_training_returns": true,
+  "signature": "40dbf8ccff572897ac4a7181cee55a0dace344dcc57d892baf940b4cdf9d856a",
+  "elapsed_seconds": 92.17699170811102,
+  "versions": {
+    "numpy": "2.4.6",
+    "pandas": "2.3.3",
+    "scikit-learn": "1.9.1",
+    "stable-baselines3": "2.9.2",
+    "torch": "2.15.0",
+    "gymnasium": "1.4.0",
+    "yfinance": "0.2.66"
+  },
+  "baseline_seed_note": "Deterministic baselines repeated identically across seeds; zero std is structural."
+}

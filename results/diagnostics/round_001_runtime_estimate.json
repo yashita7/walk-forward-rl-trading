@@ -1,0 +1,10 @@
+{
+  "prior_fit_seconds": 659.6382404193282,
+  "new_ppo_fits": 510,
+  "new_forecast_fits": 255,
+  "expected_minutes": 23.48794134731094,
+  "conservative_minutes": 29.185529616773128,
+  "method": "Twice the original measured full PPO workload + 90 sec forecast/output allowance, then 20% margin + 1 minute.",
+  "parameter_search": false,
+  "plan_commit": "2e505ef"
+}

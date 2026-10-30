@@ -1,0 +1,41 @@
+{
+  "config": {
+    "assets": [
+      "SPY",
+      "QQQ",
+      "BTC-USD"
+    ],
+    "start": "2015-01-01",
+    "end": "2026-10-30",
+    "data_dir": "data",
+    "results_dir": "results",
+    "transaction_cost_bps": 5.0,
+    "slippage_bps": 2.0,
+    "volatility_penalty": 0.01,
+    "risk_window": 20,
+    "observation_window": 20,
+    "train_years": 3,
+    "test_months": 6,
+    "annualization": 252,
+    "seeds": [
+      7,
+      21,
+      42,
+      84,
+      123
+    ],
+    "ppo_timesteps": 1024,
+    "ppo_n_steps": 256,
+    "ppo_batch_size": 64,
+    "forecast_seed": 123
+  },
+  "random_runs": 1000,
+  "costs_all_in_bps": [
+    0,
+    5,
+    7,
+    20
+  ],
+  "test_tuning": false,
+  "notes": "All folds; paired ordinary/shuffled training. Frozen-position cost sensitivity. Retrospectively activity-matched random policies."
+}

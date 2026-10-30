@@ -1,0 +1,12 @@
+{
+  "source": "results/final",
+  "fit_models": false,
+  "flat_threshold": 1e-08,
+  "seeds": [
+    7,
+    21,
+    42,
+    84,
+    123
+  ]
+}

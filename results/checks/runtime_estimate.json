@@ -1,0 +1,46 @@
+{
+  "config": {
+    "assets": [
+      "SPY",
+      "QQQ",
+      "BTC-USD"
+    ],
+    "start": "2015-01-01",
+    "end": "2026-10-30",
+    "data_dir": "data",
+    "results_dir": "results",
+    "transaction_cost_bps": 5.0,
+    "slippage_bps": 2.0,
+    "volatility_penalty": 0.01,
+    "risk_window": 20,
+    "observation_window": 20,
+    "train_years": 3,
+    "test_months": 6,
+    "annualization": 252,
+    "seeds": [
+      7,
+      21,
+      42,
+      84,
+      123
+    ],
+    "ppo_timesteps": 10000,
+    "ppo_n_steps": 256,
+    "ppo_batch_size": 64,
+    "forecast_seed": 123
+  },
+  "folds_per_asset": {
+    "SPY": 17,
+    "QQQ": 17,
+    "BTC-USD": 17
+  },
+  "policy_fits": 255,
+  "benchmark_seconds_per_policy": [
+    3.5017304997891188,
+    2.5944970827549696
+  ],
+  "estimated_training_minutes": 14.882354624103755,
+  "conservative_total_minutes": 21.34706101133488,
+  "more_than_30_minutes": false,
+  "method": "Two full-budget fold benchmarks; slowest times all policies + 30% margin + 2 minutes IO/plots."
+}

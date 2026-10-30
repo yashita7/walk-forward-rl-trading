@@ -1,0 +1,4 @@
+asset,target_mean_abs_exposure,target_internal_turnover,switch_probability,expected_internal_turnover,reference,retrospective_matching
+BTC-USD,0.10334168827989956,0.0694083546598444,0.3358197249103035,0.0694083546598444,results/checks/ordinary,True
+QQQ,0.114427316449407,0.07953230758587002,0.3475232577923581,0.07953230758587002,results/checks/ordinary,True
+SPY,0.10822899459816984,0.07630204245867553,0.3525027777536326,0.07630204245867553,results/checks/ordinary,True
