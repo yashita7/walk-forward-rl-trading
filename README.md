@@ -1,13 +1,35 @@
-# rl-trader
+# walk-forward-rl-trading
 
-A Python 3.11 research project that evaluates trading rules honestly on daily
-SPY, QQQ, and BTC-USD data. The emphasis is on information timing, real trading
-expenses, simple comparisons, and keeping negative results—not live trading.
+This project tests trading rules on SPY and QQQ, two traded funds, and Bitcoin.
+PPO (Proximal Policy Optimization) learns actions from numerical rewards.
+It learns from earlier prices and is evaluated on later dates after trading
+expenses. Original PPO lost to buy-and-hold, meaning buying and staying invested,
+on all three assets. None of four fixed follow-up changes beat buy-and-hold's
+average yearly return. Sharpe measures average return relative to variability;
+higher is generally better. The follow-up reused inspected dates, so it does not
+establish future performance.
+
+## Compact comparison
+
+Yearly return is compounded growth after expenses; ± is the spread across five
+repeatable random starting points. “Best follow-up” means the highest mean Sharpe
+among the four pre-declared changes, selected here for description rather than
+as new evidence of skill. The full comparison remains below.
+
+| Asset | Strategy | Yearly return after costs | Sharpe |
+| --- | --- | --- | --- |
+| SPY | Buy-and-hold | 15.30% ± 0.00% | 0.864 ± 0.000 |
+| SPY | Original PPO | -5.89% ± 4.73% | -0.431 ± 0.392 |
+| SPY | Best follow-up: hold less as prices vary more | 9.69% ± 0.00% | 0.939 ± 0.000 |
+| QQQ | Buy-and-hold | 20.03% ± 0.00% | 0.896 ± 0.000 |
+| QQQ | Original PPO | -9.88% ± 1.47% | -0.571 ± 0.072 |
+| QQQ | Best follow-up: hold less as prices vary more | 11.11% ± 0.00% | 1.020 ± 0.000 |
+| BTC-USD | Buy-and-hold | 37.16% ± 0.00% | 0.826 ± 0.000 |
+| BTC-USD | Original PPO | -10.25% ± 9.42% | -0.035 ± 0.229 |
+| BTC-USD | Best follow-up: hold less as prices vary more | 9.10% ± 0.00% | 0.754 ± 0.000 |
 
 Start with [START_HERE](docs/START_HERE.md), a short beginner guide.
-[EXPLAINED](docs/EXPLAINED.md) follows one trade through the code;
-[INTERVIEW_PREP](docs/INTERVIEW_PREP.md) and
-[EXPLAIN_OUT_LOUD](docs/EXPLAIN_OUT_LOUD.md) support interview practice.
+[EXPLAINED](docs/EXPLAINED.md) follows one trade through the code.
 
 ## What the evidence says
 
@@ -25,7 +47,7 @@ not a new untouched test or proof of future performance. The plan was committed
 at `2e505ef` and the tested training implementation at
 `3e3f1c7` before fitting; no settings changed during the run.
 
-## Results after costs
+## Full results after costs
 
 Yearly return is compounded account growth expressed per year, after fees and
 slippage (worse fills than the assumed price). A seed is a repeatable random
@@ -107,7 +129,8 @@ specification for other environments. Other operating systems were not validated
 Small, checksummed result archives restore excluded daily result CSVs without
 network access, retraining, deleting, or overwriting existing histories. They
 contain saved exposure decisions and realized returns, not downloaded price bars
-or model weights. The suite currently has **36 passing tests**.
+or model weights. The suite currently has **36 passing tests**. Archived
+audit files keep the test counts recorded at their original runs.
 
 ## Credentials
 
@@ -175,6 +198,3 @@ price cache is preserved but excluded from Git.
   was established. Cached prices, large histories, checkpoints, local logs,
   environment files, and credentials are excluded from Git; small result archives
   retain inspectable evidence without publishing those files.
-
-See [application material](docs/APPLICATION_MATERIAL.md) for resume wording backed
-by the saved results. Nothing was published to an external GitHub account.

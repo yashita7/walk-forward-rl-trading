@@ -1,6 +1,6 @@
 {
   "status": "passed",
-  "tests_passed": 34,
+  "tests_passed": 36,
   "fresh_copy_reconstruction": {
     "results/final": {
       "restored_paths": 60,

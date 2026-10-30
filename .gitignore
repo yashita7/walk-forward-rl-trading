@@ -37,3 +37,8 @@ results/**/checkpoints/
 results/**/logs/
 results/**/*_oos.csv
 results/**/*_runs.csv
+
+# Private career documents live in the sibling rl-trader-private folder.
+/docs/APPLICATION_MATERIAL.md
+/docs/INTERVIEW_PREP.md
+/docs/EXPLAIN_OUT_LOUD.md
